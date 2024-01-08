@@ -15,7 +15,7 @@
         padding:0.5cm;
       }
       #navbar{
-        position: absolute;
+        position: fixed;
         background-color:cyan;
       }
     </style>
