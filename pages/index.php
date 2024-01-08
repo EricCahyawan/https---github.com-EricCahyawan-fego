@@ -1,52 +1,62 @@
 <?php
   $currentPage = basename($_SERVER['PHP_SELF']);
 ?>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FEGO</title>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;800&display=swap"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <style>
-      .navlink{
-        text-decoration: none;
-        color: grey;
-        padding:0.5cm;
-      }
-      #navbar{
-        position: fixed;
-        background-color:cyan;
+      #btn-admin {
+        border: none;
+        background-color: transparent;
+        margin-top:7px;
+        text-align: left;
+        padding-left: 0;
       }
     </style>
-  </head>
-  <body style="margin:0cm">
-    <header>
-        <div id="navbar" class="container-fluid text-center">
-            <div class="row" style="background-color:brown">
-                <div class="col-4" style="padding:1cm; background-color:pink">FEGO</div>
-                <div class="col-2"><!--GAP--></div>
-                <div class="col-6" style="padding:1cm; background-color:green">
-                    <a href="pages\index.html" class="navlink col-sm-2" <?php if($currentPage == "index.php"){echo "style='color:black; font-weight:bold'";}?>>
-                        Home
-                    </a>
-                    <a href="pages\products.html" class="navlink col-sm-2" <?php if($currentPage == "products.php"){echo "style='color:black; font-weight:bold'";}?>">
-                        Products
-                    </a>
-                    <a href="pages\order.html" class="navlink col-sm-2" <?php if($currentPage == "order.php"){echo "style='color:black; font-weight:bold'";}?>">
-                        Order
-                    </a>
-                    <span class="col-sm-6"><!--GAP--></span>
-                </div>
-            </div>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm fixed-top" id="navbar">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="../homepage/homepage.php"><img src="../homepage/asset-homepage/logo bli n go 2 1.png" alt="logo" style="height: 1cm;"></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="mynavbar">
+            <ul class="navbar-nav me-auto"></ul>
+            <form class="d-flex">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                      <a class="nav-link" href="index.php" <?php if($currentPage == "index.php"){echo "style='color:black; font-weight:bold'";}?>>Home</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="products.php" <?php if($currentPage == "products.php"){echo "style='color:black; font-weight:bold'";}?>>Products</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="order.php" <?php if($currentPage == "order.php"){echo "style='color:black; font-weight:bold'";}?>>Order</a>
+                    </li>
+                    <li class="nav-item">
+                      <button class="text-secondary" id="btn-admin">Admin</button>
+                    </li>
+                </ul>
+            </form>
+          </div>
         </div>
-    </header>
-    <section>
+    </nav>
 
-    </section>
-    <footer>
 
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-  </body>
+</body>
 </html>
