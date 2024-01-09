@@ -91,6 +91,8 @@
 
     if(btn_addcategory)
     {
-        btn_addcategory.addEventListener("click", get_request_addcategory());
+        btn_addcategory.addEventListener("click", ()=>{
+            get_request_addcategory();
+        });
     }
 </script>
