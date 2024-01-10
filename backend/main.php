@@ -1,3 +1,6 @@
+<?php
+    require "../classes/categories.php";
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -59,7 +62,7 @@
             </button>
             <button class="buttonlistfitur" id="deletecategory" style="flex: 25%;">
                 <img src="../assets/deletecategory.png" alt="deletecategory" style="height: 3.3cm; margin-top: 0.5cm">
-                <p><b>Delete Category</b></p>
+                <p><b>Edit Category</b></p> <!--edit sudah termasuk delete di dalamnya-->
             </button>
             <button class="buttonlistfitur" id="addproduct" style="flex: 25%;">
                 <img src="../assets/addproduct.png" alt="addproduct" style="height: 3.8cm;">
@@ -67,23 +70,85 @@
             </button>
             <button class="buttonlistfitur" id="deleteproduct" style="flex: 25%;">
                 <img src="../assets/deleteproduct.png" alt="deleteproduct" style="height: 3.8cm;">
-                <p><b>Delete Product</b></p>
+                <p><b>Edit Product</b></p>
             </button>
         </div>
-        <div class="modal fade" id="addcategorymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> <!--Modal add category-->
+         <!--Modal add category-->
+        <div class="modal fade" id="addcategorymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
-                </div>
+                    <form action="main.php" method="post" enctype="multipart/form-data">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Category</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Name</label>
+                                    <input type="text" class="form-control" name="categoryname" placeholder="Name">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputPassword4">Description</label>
+                                    <input type="text" class="form-control" name="categorydescription" placeholder="Description">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputAddress">Image</label>
+                                <input type="file" class="form-control" name="categoryimage">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Clear all</button>
+                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" name="categorysubmit">Submit</button>
+                        </div>
+                        <?php
+                            if(count($_POST) > 0 && isset($_POST['categorysubmit'])){
+                                $categoryname = $_POST['categoryname'];
+                                $categorydescription = $_POST['categorydescription'];
+                                $rowcountcategoryname = categories :: get_category_name_by_name_rowcount($categoryname);
+                                if($rowcountcategoryname === 0){
+                                    $categoryfile = $_FILES['categoryimage'];
+                                    $categoryfilename = $categoryfile['name'];
+                                    $categoryfiletmpname = $categoryfile['tmp_name'];
+                                    $categoryfilesize = $categoryfile['size'];
+                                    $categoryfileerror = $categoryfile['error'];
+                                    $categoryfileext = explode('.', $categoryfilename);
+                                    $categoryfileactualext = strtolower(end($categoryfileext));
+                                    $allowed = ['jpg', 'jpeg', 'png', 'pdf'];
+                                    if(in_array($categoryfileactualext, $allowed)){
+                                        if($categoryfileerror === 0){
+                                            if($categoryfilesize < 10000000){
+                                                for($i = 1; ; $i++){
+                                                    $categoryfilefinalname = uniqid("", true) . "." . $categoryfileactualext;
+                                                    $rowcountcategoryfilefinalname = categories :: get_category_src_by_src($categoryfilefinalname);
+                                                    if($rowcountcategoryfilefinalname === 0){
+                                                        break;
+                                                    }
+                                                }
+                                                $categoryfiledestination = "../backend/categoryuploads/" . $categoryfilefinalname;
+                                                move_uploaded_file($categoryfiletmpname, $categoryfiledestination);
+                                                categories :: add_category($categoryname, $categorydescription, $categoryfilefinalname);
+                                                echo "<script>window.alert('Your file has been uploaded.');</script>";
+                                            }
+                                            else{
+                                                echo "<script>window.alert('The uploaded file must not exceed 10mb!');</script>";
+                                            }
+                                        }
+                                        else{
+                                            echo "<script>window.alert('There was an error!');</script>";
+                                        }
+                                    }
+                                    else{
+                                        echo "<script>window.alert('This type of file can't be uploaded!');</script>";
+                                    }
+                                }
+                                else{
+                                    echo "<script>window.alert('Please select a different name for your new category!');</script>";
+                                }
+                            }
+                        ?>
+                    </form>
                 </div>
             </div>
         </div>
