@@ -241,7 +241,7 @@
                                                         break;
                                                     }
                                                 }
-                                                $productfiledestination = "../backend/categoryuploads/" . $productfilefinalname;
+                                                $productfiledestination = "../backend/productuploads/" . $productfilefinalname;
                                                 move_uploaded_file($productfiletmpname, $productfiledestination);
                                                 products :: add_product($productname, $productdescription, $productfilefinalname, $productcategory);
                                                 echo "<script>window.alert('Your data has been uploaded.');</script>";
