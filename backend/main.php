@@ -1,5 +1,6 @@
 <?php
     require "../classes/categories.php";
+    require "../classes/products.php";
 ?>
 <!doctype html>
 <html lang="en">
@@ -9,53 +10,69 @@
     <title>main</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
+        #welcometextcontainer {
+            flex: 30%;
+        }
+
+        #welcometext {
+            font-size: 60px;
+            text-align: center; 
+        }
+
         body {
             background-color: #3cdbf0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
             margin: 0;
         }
-        #tengah{
-            width: 1000px; /* Adjust width as needed */
-            height: 500px; /* Adjust height as needed */
+
+        #tengah {
+            margin:0;
             display: flex;
             flex-direction: column;
-            flex-wrap: nowrap;
             align-items: center;
             justify-content: center;
+            flex-wrap:nowrap;
         }
-        #listfitur{
+
+        #listfitur {
+            flex: 70%;
             display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
+            flex-direction:row;
+            flex-wrap: wrap;
             justify-content: center;
-            align-items: center;
         }
-        .buttonlistfitur{
-            height: 5cm;
-            width: 5cm;
+
+        .buttonlistfitur {
+            flex:25%;
+            max-height: 5cm;
+            max-width: 5cm;
+            min-width: 3cm;
+            min-height: 3cm;
             border-radius: 50%;
-            margin: 1cm;
             background-color: #1a8c9d;
             border: none;
             box-shadow: 3px 3px 5px #191818;
             transition: transform 0.2s ease-in-out;
+            margin:0.4cm;
         }
-        .buttonlistfitur:hover{
+
+        .buttonlistfitur:hover {
             transform: translateY(-5px);
         }
-        .buttonlistfitur:active{
+
+        .buttonlistfitur:active {
             background-color: #0f6b7e;
+        }
+        img{
+            margin:5px
         }
     </style>
   </head>
   <body id="body">
     <div id="tengah">
-        <h1 style="font-size: 60px;">WELCOME ADMIN</h1> <!--"ADMIN" diganti dengan $_SESSION['usernameadmin']-->
-        <hr>
-        <div id="listfitur">
+        <div class="container" id="welcometextcontainer">
+            <h1 id="welcometext">WELCOME ADMIN</h1> 
+        </div>
+        <div class="container" id="listfitur">
             <button class="buttonlistfitur" id="addcategory" style="flex: 25%;" data-bs-toggle="modal" data-bs-target="#addcategorymodal">
                 <img src="../assets/addcategory.png" alt="addcategory" style="height: 3.1cm; margin-top: 0.5cm;">
                 <p><b>Add Category</b></p>
@@ -64,7 +81,7 @@
                 <img src="../assets/deletecategory.png" alt="deletecategory" style="height: 3.3cm; margin-top: 0.5cm">
                 <p><b>Edit Category</b></p> <!--edit sudah termasuk delete di dalamnya-->
             </button>
-            <button class="buttonlistfitur" id="addproduct" style="flex: 25%;">
+            <button class="buttonlistfitur" id="addproduct" style="flex: 25%;" data-bs-toggle="modal" data-bs-target="#addproductmodal">
                 <img src="../assets/addproduct.png" alt="addproduct" style="height: 3.8cm;">
                 <p><b>Add Product</b></p>
             </button>
@@ -73,63 +90,161 @@
                 <p><b>Edit Product</b></p>
             </button>
         </div>
-         <!--Modal add category-->
+        <!--Modal add category-->
         <div class="modal fade" id="addcategorymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <form action="main.php" method="post" enctype="multipart/form-data">
+                    <form id="addcategoryform" action="main.php" method="post" enctype="multipart/form-data">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Category</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel"><b>Add Category</b></h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="inputEmail4">Name</label>
-                                    <input type="text" class="form-control" name="categoryname" placeholder="Name">
+                                    <label>Name</label>
+                                    <input type="text" class="form-control" name="categoryname" placeholder="Name" required>
                                 </div>
+                                <br>
                                 <div class="form-group col-md-6">
-                                    <label for="inputPassword4">Description</label>
-                                    <input type="text" class="form-control" name="categorydescription" placeholder="Description">
+                                    <label>Description</label>
+                                    <textarea name="categorydescription" id="" cols="30" rows="10" required></textarea>
                                 </div>
+                                <br>
                             </div>
                             <div class="form-group">
-                                <label for="inputAddress">Image</label>
-                                <input type="file" class="form-control" name="categoryimage">
+                                <label>Image</label>
+                                <input type="file" class="form-control" name="categoryimage" required>
                             </div>
+                            <br>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Clear all</button>
-                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" name="categorysubmit">Submit</button>
+                            <button type="button" id="addcategoryclearbtn" class="btn btn-secondary">Clear All</button>
+                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="categorysubmit" name="categorysubmit" disabled>Submit</button>
                         </div>
                         <?php
                             if(count($_POST) > 0 && isset($_POST['categorysubmit'])){
-                                $categoryname = $_POST['categoryname'];
-                                $categorydescription = $_POST['categorydescription'];
-                                $rowcountcategoryname = categories :: get_category_name_by_name_rowcount($categoryname);
-                                if($rowcountcategoryname === 0){
-                                    $categoryfile = $_FILES['categoryimage'];
-                                    $categoryfilename = $categoryfile['name'];
-                                    $categoryfiletmpname = $categoryfile['tmp_name'];
-                                    $categoryfilesize = $categoryfile['size'];
-                                    $categoryfileerror = $categoryfile['error'];
-                                    $categoryfileext = explode('.', $categoryfilename);
-                                    $categoryfileactualext = strtolower(end($categoryfileext));
+                                    $categoryname = $_POST['categoryname'];
+                                    $categorydescription = $_POST['categorydescription'];
+                                    $rowcountcategoryname = categories :: get_category_name_by_name_rowcount($categoryname); //masalah
+                                    if($rowcountcategoryname === 0){
+                                        $categoryfile = $_FILES['categoryimage'];
+                                        $categoryfilename = $categoryfile['name'];
+                                        $categoryfiletmpname = $categoryfile['tmp_name'];
+                                        $categoryfilesize = $categoryfile['size'];
+                                        $categoryfileerror = $categoryfile['error'];
+                                        $categoryfileext = explode('.', $categoryfilename);
+                                        $categoryfileactualext = strtolower(end($categoryfileext));
+                                        $allowed = ['jpg', 'jpeg', 'png', 'pdf'];
+                                        if(in_array($categoryfileactualext, $allowed)){
+                                            if($categoryfileerror === 0){
+                                                if($categoryfilesize < 10000000){
+                                                    for($i = 1; ; $i++){
+                                                        $categoryfilefinalname = uniqid("", true) . "." . $categoryfileactualext;
+                                                        $rowcountcategoryfilefinalname = categories :: get_category_src_by_src($categoryfilefinalname);
+                                                        if($rowcountcategoryfilefinalname === 0){
+                                                            break;
+                                                        }
+                                                    }
+                                                    $categoryfiledestination = "../backend/categoryuploads/" . $categoryfilefinalname;
+                                                    move_uploaded_file($categoryfiletmpname, $categoryfiledestination);
+                                                    categories :: add_category($categoryname, $categorydescription, $categoryfilefinalname);
+                                                    echo "<script>window.alert('Your data has been uploaded.');</script>";
+                                                }
+                                                else{
+                                                    echo "<script>window.alert('The uploaded file must not exceed 10mb!');</script>";
+                                                }
+                                            }
+                                            else{
+                                                echo "<script>window.alert('There was an error!');</script>";
+                                            }
+                                        }
+                                        else{
+                                            echo "<script>window.alert('This type of file cant be uploaded!');</script>";
+                                        }
+                                    }
+                                    else{
+                                        echo "<script>window.alert('Please select a different name for your new category!');</script>";
+                                    }
+                            }
+                        ?>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--Modal add product-->
+        <div class="modal fade" id="addproductmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <form id="addproductform" action="main.php" method="post" enctype="multipart/form-data">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel"><b>Add Product</b></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>Name</label>
+                                    <input type="text" class="form-control" name="productname" placeholder="Name" required>
+                                </div>
+                                <br>
+                                <div class="form-group col-md-6">
+                                    <label>Description</label>
+                                    <textarea name="productdescription" id="productdescription" cols="30" rows="10" required></textarea>
+                                </div>
+                                <br>
+                            </div>
+                            <div class="form-group">
+                                <label>Image</label>
+                                <input type="file" class="form-control" name="productimage" required>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label>Category</label>
+                                <br>
+                                <?php
+                                    $allcategoriesrowcount =  categories::get_allcategory_rowcount(); //masalah
+                                    for($i = 0; $i < $allcategoriesrowcount ; $i++){
+                                        $allcategories = categories::get_allcategory();
+                                        $namakategori = $allcategories[$i]['namakategori'];
+                                        echo "<input type='radio' name='categoryoptions' value='{$namakategori}' required>{$namakategori}   ";
+                                    }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="addproductclearbtn" class="btn btn-secondary">Clear All</button>
+                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" name="productsubmit" id="productsubmit" disabled>Submit</button>
+                        </div>
+                        <?php
+                            if(count($_POST) > 0 && isset($_POST['productsubmit'])){
+                                $productname = $_POST['productname'];
+                                $productdescription = $_POST['productdescription'];
+                                $productcategory = $_POST['categoryoptions'];
+                                $rowcountproductname = products :: get_product_name_by_name_rowcount($productname);
+                                if($rowcountproductname === 0){
+                                    $productfile = $_FILES['productimage'];
+                                    $productfilename = $productfile['name'];
+                                    $productfiletmpname = $productfile['tmp_name'];
+                                    $productfilesize = $productfile['size'];
+                                    $productfileerror = $productfile['error'];
+                                    $productfileext = explode('.', $productfilename);
+                                    $productfileactualext = strtolower(end($productfileext));
                                     $allowed = ['jpg', 'jpeg', 'png', 'pdf'];
-                                    if(in_array($categoryfileactualext, $allowed)){
-                                        if($categoryfileerror === 0){
-                                            if($categoryfilesize < 10000000){
+                                    if(in_array($productfileactualext, $allowed)){
+                                        if($productfileerror === 0){
+                                            if($productfilesize < 10000000){
                                                 for($i = 1; ; $i++){
-                                                    $categoryfilefinalname = uniqid("", true) . "." . $categoryfileactualext;
-                                                    $rowcountcategoryfilefinalname = categories :: get_category_src_by_src($categoryfilefinalname);
-                                                    if($rowcountcategoryfilefinalname === 0){
+                                                    $productfilefinalname = uniqid("", true) . "." . $productfileactualext;
+                                                    $rowcountproductfilefinalname = products :: get_product_src_by_src_rowcount($productfilefinalname);
+                                                    if($rowcountproductfilefinalname === 0){
                                                         break;
                                                     }
                                                 }
-                                                $categoryfiledestination = "../backend/categoryuploads/" . $categoryfilefinalname;
-                                                move_uploaded_file($categoryfiletmpname, $categoryfiledestination);
-                                                categories :: add_category($categoryname, $categorydescription, $categoryfilefinalname);
-                                                echo "<script>window.alert('Your file has been uploaded.');</script>";
+                                                $productfiledestination = "../backend/categoryuploads/" . $productfilefinalname;
+                                                move_uploaded_file($productfiletmpname, $productfiledestination);
+                                                products :: add_product($productname, $productdescription, $productfilefinalname, $productcategory);
+                                                echo "<script>window.alert('Your data has been uploaded.');</script>";
                                             }
                                             else{
                                                 echo "<script>window.alert('The uploaded file must not exceed 10mb!');</script>";
@@ -144,7 +259,7 @@
                                     }
                                 }
                                 else{
-                                    echo "<script>window.alert('Please select a different name for your new category!');</script>";
+                                    echo "<script>window.alert('Please select a different name for your new product!');</script>";
                                 }
                             }
                         ?>
@@ -157,6 +272,7 @@
   </body>
 </html>
 <script>
+    
     // let btn_addcategory = document.querySelector("#addcategory");
     // let body = document.querySelector("#body");
     // function get_request_addcategory() {
@@ -177,4 +293,34 @@
     //         get_request_addcategory();
     //     });
     // }
+    //-------------------------CLEAR ALL BUTTON-------------------------
+    document.querySelector('#addcategoryclearbtn').addEventListener("click", () => {
+        document.querySelector('#addcategoryform').reset();
+    });
+    document.querySelector('#addproductclearbtn').addEventListener("click", () => {
+        document.querySelector('#addproductform').reset();
+    });
+    //-------------------------CLEAR ALL BUTTON-------------------------
+
+    //-------------------------ALL FIELDS MUST BE FILLED IN-------------------------
+    const addcategoryform = document.getElementById('addcategoryform');
+    const categorysubmit = document.getElementById('categorysubmit');
+    addcategoryform.addEventListener('input', function() {
+        if (addcategoryform.checkValidity()) {
+            categorysubmit.removeAttribute('disabled');
+        } else {
+            categorysubmit.setAttribute('disabled', 'true');
+        }
+    });
+    const addproductform = document.getElementById('addproductform');
+    const productsubmit = document.getElementById('productsubmit');
+    addproductform.addEventListener('input', function() {
+        if (addproductform.checkValidity()) {
+            productsubmit.removeAttribute('disabled');
+        } else {
+            productsubmit.setAttribute('disabled', 'true');
+        }
+    });
+    //-------------------------ALL FIELDS MUST BE FILLED IN-------------------------
+
 </script>
