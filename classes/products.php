@@ -23,6 +23,18 @@
 			$result = $conn->query($query);
 			return $result->rowCount();
 		}
+		public static function get_product_src_by_category($name = null){
+			$conn = products::get_db_connection();
+			$query = "SELECT * FROM listproduk where kategoriproduk = '{$name}'";
+			$result = $conn->query($query);
+			return $result->fetchAll(PDO::FETCH_ASSOC);
+		}
+		public static function get_product_src_by_name($name = null){
+			$conn = products::get_db_connection();
+			$query = "SELECT * FROM listproduk where namaproduk = '{$name}'";
+			$result = $conn->query($query);
+			return $result->fetch();
+		}
         public static function delete_product_by_categoryname($categoryname = null){
 			$conn = products::get_db_connection();
 			$query = "DELETE FROM listproduk WHERE kategoriproduk = '{$categoryname}'";

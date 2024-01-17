@@ -17,6 +17,12 @@
 			$result = $conn->query($query);
 			return $result->rowCount();
 		}
+		public static function get_category_src_by_name($name = null){
+			$conn = categories::get_db_connection();
+			$query = "SELECT * FROM kategori where namakategori = '{$name}'";
+			$result = $conn->query($query);
+			return $result->fetch();
+		}
         public static function get_allcategory_rowcount(){
 			$conn = categories::get_db_connection();
 			$query = "SELECT * FROM kategori";
