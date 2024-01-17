@@ -11,11 +11,38 @@
 			$result = $conn->query($query);
 			return $result->rowCount();
 		}
+        public static function get_product_by_name($name = null){
+			$conn = products::get_db_connection();
+			$query = "SELECT * FROM listproduk where namaproduk = '{$name}'";
+			$result = $conn->query($query);
+            return $result->fetchAll(PDO::FETCH_ASSOC);
+		}
         public static function get_product_src_by_src_rowcount($src = null){
 			$conn = products::get_db_connection();
 			$query = "SELECT * FROM listproduk where srcproduk = '{$src}'";
 			$result = $conn->query($query);
 			return $result->rowCount();
+		}
+        public static function delete_product_by_categoryname($categoryname = null){
+			$conn = products::get_db_connection();
+			$query = "DELETE FROM listproduk WHERE kategoriproduk = '{$categoryname}'";
+			$result = $conn->exec($query);
+		}
+        public static function delete_product_by_productname($productname = null){
+			$conn = products::get_db_connection();
+			$query = "DELETE FROM listproduk WHERE namaproduk = '{$productname}'";
+			$result = $conn->exec($query);
+		}
+        public static function get_all_products(){
+			$conn = products::get_db_connection();
+			$query = "SELECT * FROM listproduk";
+			$result = $conn->query($query);
+            return $result->fetchAll();
+		}
+        public static function edit_product($name = null, $description = null, $image = null, $radio = null){
+			$conn = products::get_db_connection();
+			$query = "UPDATE listproduk SET namaproduk = '{$name}', keteranganproduk = '{$description}', srcproduk = '{$image}' WHERE namaproduk = '{$radio}'";
+			$result = $conn->exec($query);
 		}
         protected static function get_db_connection()
         {

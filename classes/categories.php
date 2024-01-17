@@ -29,6 +29,22 @@
 			$result = $conn->query($query);
 			return $result->fetchAll();
 		}
+		public static function get_category_by_name($nama = null){
+			$conn = categories::get_db_connection();
+			$query = "SELECT * FROM kategori where namakategori = '{$nama}'";
+			$result = $conn->query($query);
+			return $result->fetch();
+		}
+		public static function delete_category_by_name($nama = null){
+			$conn = categories::get_db_connection();
+			$query = "DELETE FROM kategori WHERE namakategori = '{$nama}'";
+			$result = $conn->exec($query);
+		}
+		public static function edit_category($name = null, $description = null, $image = null, $radio = null){
+			$conn = categories::get_db_connection();
+			$query = "UPDATE kategori SET namakategori = '{$name}', keterangankategori = '{$description}', srckategori = '{$image}' WHERE namakategori = '{$radio}'";
+			$result = $conn->exec($query);
+		}
         protected static function get_db_connection()
         {
             $servername = "localhost";
