@@ -1,6 +1,6 @@
 <?php
     require "../classes/categories.php";
-    require "../classes/products.php";
+    require "../classes/productsclass.php";
 ?>
 <?php
                             if(count($_POST) > 0 && isset($_POST['editcategorysubmit'])){

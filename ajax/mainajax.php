@@ -1,6 +1,6 @@
 <?php
     require "../classes/categories.php";
-    require "../classes/products.php";
+    require "../classes/productsclass.php";
 ?>
 <?php
     if ($_SERVER["REQUEST_METHOD"] == "GET" && $_GET["q"] == "deletecategory") {
